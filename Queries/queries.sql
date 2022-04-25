@@ -344,3 +344,48 @@ ORDER BY e.emp_no;
 
 
 
+-- Used for analysis:
+SELECT COUNT(emp_no) FROM mentorship_eligibility;
+
+SELECT * FROM retirement_info;
+
+SELECT * FROM emp_info;
+
+SELECT COUNT(emp_no), title
+FROM mentorship_eligibility
+GROUP BY (title)
+ORDER BY count DESC;
+
+-- How many total retiring ppl
+SELECT COUNT(emp_no) FROM unique_titles;
+
+-- How many current employees in total
+SELECT COUNT(e.emp_no)
+FROM employees AS e
+LEFT JOIN dept_emp as de
+ON (e.emp_no = de.emp_no)
+WHERE (de.to_date = '9999-01-01');
+
+-- How many current employees per each title:
+SELECT COUNT(e.emp_no), ti.title
+FROM employees AS e
+LEFT JOIN dept_emp as de
+ON (e.emp_no = de.emp_no)
+LEFT JOIN titles as ti
+ON (e.emp_no = ti.emp_no)
+WHERE (de.to_date = '9999-01-01')
+GROUP BY (ti.title)
+ORDER BY count DESC;
+
+-- Find the number of total current PH employees by department
+SELECT COUNT(e.emp_no), d.dept_name
+FROM employees AS e
+LEFT JOIN dept_emp as de
+ON (e.emp_no = de.emp_no)
+LEFT JOIN departments as d
+ON (de.dept_no = d.dept_no)
+WHERE (de.to_date = '9999-01-01')
+GROUP BY (d.dept_name)
+ORDER BY count DESC;
+
+SELECT SUM(count) FROM total_by_dept;
